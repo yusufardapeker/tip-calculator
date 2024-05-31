@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png" />
+
+		<link rel="stylesheet" href="./styles/reset.css" />
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+			rel="stylesheet"
+		/>
+
+		<link rel="stylesheet" href="./styles/style.css" />
+
+		<title>Tip calculator app</title>
+	</head>
+	<body>
+		<img src="./images/logo.svg" alt="Logo" class="logo" />
+
+		<div class="container">
+			<div class="bill-input">
+				<div class="bill-amount">
+					<div class="input-head">
+						<h3>Bill</h3>
+						<span class="error-msg">Can't be zero</span>
+					</div>
+					<input type="number" placeholder="0" min="0" class="bill-amount-input" />
+				</div>
+
+				<div class="bill-select-tip">
+					<h3>Select Tip %</h3>
+					<div class="bill-select-tip-buttons-wrapper">
+						<button class="bill-select-button">5%</button>
+						<button class="bill-select-button">10%</button>
+						<button class="bill-select-button">15%</button>
+						<button class="bill-select-button">25%</button>
+						<button class="bill-select-button">50%</button>
+						<input type="number" class="bill-select-button custom" placeholder="Custom" min="0" />
+					</div>
+				</div>
+				<div class="bill-people-number">
+					<div class="input-head">
+						<h3>Number of People</h3>
+						<span class="error-msg">Can't be zero</span>
+					</div>
+					<input type="number" placeholder="0" min="0" class="bill-people-number-input" />
+				</div>
+			</div>
+
+			<div class="tip-result">
+				<div class="tip-result-item">
+					<div class="tip-result-text">
+						<span class="tip-result-title">Tip Amount</span>
+						<span class="tip-result-sub-title">/ person</span>
+					</div>
+					<div class="tip-result-number amount">$0.00</div>
+				</div>
+
+				<div class="tip-result-item">
+					<div class="tip-result-text">
+						<span class="tip-result-title">Total</span>
+						<span class="tip-result-sub-title">/ person</span>
+					</div>
+					<div class="tip-result-number total">$0.00</div>
+				</div>
+
+				<button class="reset-btn" disabled>Reset</button>
+			</div>
+		</div>
+
+		<script src="script.js"></script>
+	</body>
+</html>
