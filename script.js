@@ -1,5 +1,6 @@
 const billAmountInput = document.querySelector(".bill-amount-input");
 const selectTipButtons = document.querySelectorAll(".bill-select-button");
+const customSelectBillButton = document.querySelector(".custom");
 const billPeopleInput = document.querySelector(".bill-people-number-input");
 const errorMessages = document.querySelectorAll(".error-msg");
 
@@ -68,6 +69,7 @@ const isCorrect = (...args) => {
 resetBtn.addEventListener("click", () => {
 	billAmountInput.value = "";
 	selectTipButtons.forEach((button) => button.classList.remove("selected"));
+	customSelectBillButton.value = "";
 	billPeopleInput.value = "";
 	tipResultAmount.textContent = "$0.00";
 	tipResultTotal.textContent = "$0.00";
