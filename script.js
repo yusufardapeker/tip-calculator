@@ -1,5 +1,5 @@
 const billAmountInput = document.querySelector(".bill-amount-input");
-const selectTipButtons = document.querySelectorAll(".bill-select-button");
+const selectBillButtons = document.querySelectorAll("button.bill-select-button");
 const customSelectBillButton = document.querySelector(".custom");
 const billPeopleInput = document.querySelector(".bill-people-number-input");
 const errorMessages = document.querySelectorAll(".error-msg");
@@ -9,70 +9,134 @@ const tipResultTotal = document.querySelector(".tip-result-number.total");
 
 const resetBtn = document.querySelector(".reset-btn");
 
-const getSelectedRate = () => {
-	selectTipButtons.forEach((button, index, array) => {
-		button.addEventListener("click", (e) => {
-			array.forEach((element) => element.classList.remove("selected"));
-			e.target.classList.add("selected");
+const billAmountHandler = () => {
+	let billAmount = 0;
 
-			let selectedButtonVal = parseInt(e.target.textContent);
-			calculate(selectedButtonVal);
+	return {
+		setBillAmount: (amount) => (billAmount = amount),
+		getBillAmount: () => billAmount,
+	};
+};
 
-			if (array[5] === array[index]) {
-				array[5].addEventListener("input", (e) => {
-					selectedButtonVal = parseInt(e.target.value);
+const peopleHandler = () => {
+	let peopleCount = 0;
 
-					calculate(selectedButtonVal);
-				});
-			}
-		});
+	return {
+		setPeopleCount: (count) => (peopleCount = count),
+		getPeopleCount: () => peopleCount,
+	};
+};
+
+const buttonRateHandler = () => {
+	let buttonRate = 15;
+
+	return {
+		setButtonRate: (rate) => (buttonRate = rate),
+		getButtonRate: () => buttonRate,
+	};
+};
+
+const buttonRate = buttonRateHandler();
+const peopleCount = peopleHandler();
+const billAmount = billAmountHandler();
+
+const switchSelectedButton = (button, array) => {
+	array.forEach((buttons) => buttons.classList.remove("selected"));
+	button.classList.add("selected");
+};
+
+const checkValidation = (input) => {
+	if (parseInt(input.value) > 0 && input.value !== "") {
+		input.classList.remove("error");
+		return true;
+	} else {
+		input.classList.add("error");
+		return false;
+	}
+};
+
+const handleCustomButton = (e) => {
+	selectBillButtons.forEach((button) => button.classList.remove("selected"));
+
+	const isValid = checkValidation(e.target);
+
+	if (isValid) {
+		buttonRate.setButtonRate(parseInt(e.target.value));
+		calculate();
+	}
+};
+
+const handleButtons = (button, index, array) => {
+	button.addEventListener("click", () => {
+		switchSelectedButton(button, array);
+		customSelectBillButton.classList.remove("error");
+		customSelectBillButton.value = "";
+
+		buttonRate.setButtonRate(parseInt(button.textContent));
+		calculate();
 	});
 };
 
-getSelectedRate();
+const handleBillAmount = (e) => {
+	const isValid = checkValidation(billAmountInput);
 
-const inputs = [billAmountInput, billPeopleInput];
-
-const calculate = (buttonRate = 15) => {
-	inputs.forEach((input, index, array) => {
-		input.addEventListener("input", () => {
-			let amountVal = parseInt(array[0].value);
-			let personVal = parseInt(array[1].value);
-
-			isCorrect(amountVal, personVal);
-
-			let tipCost = (amountVal * buttonRate) / 100;
-
-			if (amountVal > 0 && personVal > 0) {
-				tipResultAmount.textContent = (tipCost / personVal).toFixed(2);
-				tipResultTotal.textContent = ((amountVal + tipCost) / personVal).toFixed(2);
-				resetBtn.disabled = false;
-			}
-		});
-	});
+	if (isValid) {
+		billAmount.setBillAmount(parseInt(e.target.value));
+		calculate();
+	}
 };
 
-const isCorrect = (...args) => {
-	const argumants = [...args];
+const handlePeople = (e) => {
+	const isValid = checkValidation(billPeopleInput);
 
-	argumants.forEach((argumant, index) => {
-		if (argumant === 0) {
-			inputs[index].classList.add("error");
-			errorMessages[index].style.display = "block";
-		} else {
-			inputs[index].classList.remove("error");
-			errorMessages[index].style.display = "none";
-		}
-	});
+	if (isValid) {
+		peopleCount.setPeopleCount(parseInt(e.target.value));
+		calculate();
+	}
 };
+
+const displayResult = (amountResult, total) => {
+	tipResultAmount.textContent = amountResult;
+	tipResultTotal.textContent = total;
+
+	billAmountInput.disabled = true;
+	billPeopleInput.disabled = true;
+};
+
+const calculate = () => {
+	const rate = buttonRate.getButtonRate();
+	const amount = billAmount.getBillAmount();
+	const count = peopleCount.getPeopleCount();
+
+	if (amount > 0 && count > 0) {
+		const tipCost = (amount * rate) / 100;
+		const amountResult = (tipCost / count).toFixed(2);
+		const total = ((amount + tipCost) / count).toFixed(2);
+
+		resetBtn.disabled = false;
+
+		displayResult(amountResult, total);
+	}
+};
+
+billPeopleInput.addEventListener("input", handlePeople);
+billAmountInput.addEventListener("input", handleBillAmount);
+customSelectBillButton.addEventListener("input", handleCustomButton);
+selectBillButtons.forEach(handleButtons);
 
 resetBtn.addEventListener("click", () => {
+	selectBillButtons.forEach((button) => button.classList.remove("selected"));
 	billAmountInput.value = "";
-	selectTipButtons.forEach((button) => button.classList.remove("selected"));
 	customSelectBillButton.value = "";
 	billPeopleInput.value = "";
+
 	tipResultAmount.textContent = "$0.00";
 	tipResultTotal.textContent = "$0.00";
+	billAmount.setBillAmount(0);
+	buttonRate.setButtonRate(15);
+	peopleCount.setPeopleCount(0);
+	billAmountInput.disabled = false;
+	billPeopleInput.disabled = false;
 	resetBtn.disabled = true;
 });
 
