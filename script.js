@@ -2,7 +2,6 @@ const billAmountInput = document.querySelector(".bill-amount-input");
 const selectBillButtons = document.querySelectorAll("button.bill-select-button");
 const customSelectBillButton = document.querySelector(".custom");
 const billPeopleInput = document.querySelector(".bill-people-number-input");
-const errorMessages = document.querySelectorAll(".error-msg");
 
 const tipResultAmount = document.querySelector(".tip-result-number.amount");
 const tipResultTotal = document.querySelector(".tip-result-number.total");

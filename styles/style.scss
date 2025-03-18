@@ -53,12 +53,6 @@ input {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-
-	.error-msg {
-		font-size: 12px;
-		color: $red;
-		display: none;
-	}
 }
 
 h3 {
